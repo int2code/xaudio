@@ -1,0 +1,44 @@
+[project]
+name = "int2code-xaudio"
+description = "Empty package template."
+requires-python = ">=3.11"
+license = {file = "LICENSE.txt"}
+maintainers = [
+  {name = "Piotr Sznapka", email = "piotr.sznapka@int2code.com" } # Optional
+]
+dynamic = ["dependencies", "version", "readme", "optional-dependencies"]
+
+[tool.setuptools]
+# If there are data files included in your packages that need to be
+# installed, specify them here.
+package-data = {"template" = ["**\\*.json"]}
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+version = {file = "version.txt"}
+readme = {file = ["README.md"]}
+
+[tool.setuptools.dynamic.optional-dependencies]
+# List additional groups of dependencies here (e.g. development
+# dependencies). Users will be able to install these using the "extras"
+# syntax, for example:
+#
+#   $ pip install sampleproject[dev]
+test = {file = ["requirements-test.txt"]}
+dev = {file = ["requirements-test.txt", "requirements-dev.txt"]}
+
+[build-system]
+# These are the assumed default build requirements from pip:
+# https://pip.pypa.io/en/stable/reference/pip/#pep-517-and-518-support
+requires = ["setuptools>=43.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.coverage.report]
+omit = [
+  "*/protocol/*"  # those are automaticaly generated files by third party tools
+]
+
+[tool.pylint]
+ignore-paths = ['.*protocol.*']  # those are automaticaly generated files by third party tools

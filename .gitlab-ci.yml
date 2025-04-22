@@ -1,0 +1,85 @@
+image: python:3.11
+
+stages:
+  - test
+  - lint
+  - deploy_dev
+  - release
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+cache:
+  paths:
+    - .tox/
+    - .cache/pip/
+
+before_script:
+  - python --version
+  - pip install tox
+
+test:
+  stage: test
+  script:
+    - tox -e tests
+    - mkdir -p test_report
+    - cp -r .tox/tests/tmp/test_report/* test_report/
+  artifacts:
+    paths:
+      - test_report
+    expire_in: 1 week
+
+build_docs:
+  stage: test
+  script:
+    - pip install . -r docs/requirements.txt
+    - pkg_name=$(ls src)
+    - sphinx-apidoc -o docs/modules src/$pkg_name
+    - sphinx-build -b html -W docs generated_docs
+  artifacts:
+    paths:
+      - generated_docs
+    expire_in: 1 week
+
+lint:
+  stage: lint
+  script:
+    - tox -e lint
+
+deploy_dev:
+  stage: deploy_dev
+  script:
+    - chmod +x ./_ci/is_dev_version.sh
+    - ./_ci/is_dev_version.sh
+    - tox -e build
+    - pip install build twine
+    - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token
+      python -m twine upload --repository-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi dist/*
+  when: manual
+  needs:
+    - test
+
+release:
+  stage: release
+  script:
+    - tox -e build
+    - pip install build twine
+    - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token 
+      python -m twine upload --repository-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi dist/*
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_REF_NAME == "main"'
+  needs:
+    - test
+
+pages:
+  stage: release
+  script:
+  - mv generated_docs public
+  artifacts:
+    paths:
+    - public
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_REF_NAME == "main"'
+  needs:
+    - build_docs
+  pages: true
