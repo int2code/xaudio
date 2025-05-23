@@ -3,21 +3,16 @@
 # For the full list of built-in configuration values, see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 # pylint: skip-file
-from pathlib import Path
-
-ROOT_DIR = Path('..').resolve()
-with open(ROOT_DIR / "version.txt") as fh:
-    VERSION = fh.read()
+from datetime import date
+from pkg_resources import get_distribution
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'int2code-xaudio'
-copyright = '2025, int2code'
+project = 'xaudio'
+copyright = f"{date.today().year}, int2code"
 author = 'int2code'
-
-version = VERSION
-release = VERSION
+version = release = get_distribution("xaudio").version
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

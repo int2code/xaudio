@@ -1,6 +1,6 @@
 [project]
-name = "int2code-xaudio"
-description = "Empty package template."
+name = "xaudio"
+description = "Classes used to communicate with `XAudio` device over different supported mediums and protocols."
 requires-python = ">=3.11"
 license = {file = "LICENSE.txt"}
 maintainers = [
@@ -8,31 +8,25 @@ maintainers = [
 ]
 dynamic = ["dependencies", "version", "readme", "optional-dependencies"]
 
-[tool.setuptools]
-# If there are data files included in your packages that need to be
-# installed, specify them here.
-package-data = {"template" = ["**\\*.json"]}
 [tool.setuptools.packages.find]
 where = ["src"]
 
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
-version = {file = "version.txt"}
 readme = {file = ["README.md"]}
 
+[tool.setuptools_scm]
+write_to = "src/device_communication/_version.py"
+
 [tool.setuptools.dynamic.optional-dependencies]
-# List additional groups of dependencies here (e.g. development
-# dependencies). Users will be able to install these using the "extras"
-# syntax, for example:
-#
-#   $ pip install sampleproject[dev]
 test = {file = ["requirements-test.txt"]}
 dev = {file = ["requirements-test.txt", "requirements-dev.txt"]}
+docs = { file = ["requirements-test.txt", "docs/requirements.txt"]  }
 
 [build-system]
 # These are the assumed default build requirements from pip:
 # https://pip.pypa.io/en/stable/reference/pip/#pep-517-and-518-support
-requires = ["setuptools>=43.0.0", "wheel"]
+requires = ["setuptools>=64", "setuptools-scm>=8"]
 build-backend = "setuptools.build_meta"
 
 [tool.coverage.report]
