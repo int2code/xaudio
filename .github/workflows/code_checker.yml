@@ -1,0 +1,42 @@
+name: Code-checker
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.12"]
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install .[dev]
+    - name: Gathering the changed files
+      id: gather
+      run: |
+        git fetch origin
+        files=$(git diff --name-only origin/main -- "*.py" | xargs)
+        echo "Changed files: $files"
+        echo "$files" > changed_files.txt
+        echo "files=$files" >> "$GITHUB_OUTPUT"
+
+    - name: Analysing the code with pylint
+      if: steps.gather.outputs.files != ''
+      run: |
+        files=$(cat changed_files.txt)
+        pylint \
+          --disable duplicate-code \
+          --ignore=$(paste -sd, - < .pylint_ignore) $files
+
+    - name: Analysing the code style with black
+      if: steps.gather.outputs.files != ''
+      run: |
+        files=$(cat changed_files.txt)
+        black --check --diff $files

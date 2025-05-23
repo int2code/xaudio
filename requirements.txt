@@ -1,0 +1,5 @@
+cobs
+device-communication
+libscrc
+protobuf==5.*  # nanopb is compatible with major 5.*, otherwise warnings are thrown
+pyserial

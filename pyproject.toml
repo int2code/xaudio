@@ -1,0 +1,38 @@
+[project]
+name = "xaudio"
+description = "Classes used to communicate with `XAudio` device over different supported mediums and protocols."
+requires-python = ">=3.11"
+license = {file = "LICENSE.txt"}
+maintainers = [
+  {name = "Piotr Sznapka", email = "piotr.sznapka@int2code.com" } # Optional
+]
+dynamic = ["dependencies", "version", "readme", "optional-dependencies"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+readme = {file = ["README.md"]}
+
+[tool.setuptools_scm]
+write_to = "src/xaudio/_version.py"
+
+[tool.setuptools.dynamic.optional-dependencies]
+test = {file = ["requirements-test.txt"]}
+dev = {file = ["requirements-test.txt", "requirements-dev.txt"]}
+docs = { file = ["requirements-test.txt", "docs/requirements.txt"]  }
+
+[build-system]
+# These are the assumed default build requirements from pip:
+# https://pip.pypa.io/en/stable/reference/pip/#pep-517-and-518-support
+requires = ["setuptools>=64", "setuptools-scm>=8"]
+build-backend = "setuptools.build_meta"
+
+[tool.coverage.report]
+omit = [
+  "*/protocol/*"  # those are automaticaly generated files by third party tools
+]
+
+[tool.pylint]
+ignore-paths = ['.*protocol.*']  # those are automaticaly generated files by third party tools
