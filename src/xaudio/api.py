@@ -64,8 +64,7 @@ class XAudioApi:
 
         """
         a2b_discover_request = A2BDiscoverRequest(dummy=True)
-        request_packet = RequestPacket(
-            a2b_discover_request=a2b_discover_request)
+        request_packet = RequestPacket(a2b_discover_request=a2b_discover_request)
         response = self.client.request(request_packet)
         return response
 

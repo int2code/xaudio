@@ -1,9 +1,10 @@
 """Quick sample use of XAudio Client and API."""
+
 # pylint:disable=no-name-in-module
 
 from xaudio.api import XAudioApi
 from xaudio.clients import XAudioClient
-from xaudio.protocol.interface_pb2 import RequestPacket, InfoRequest
+from xaudio.protocol.interface_pb2 import InfoRequest, RequestPacket
 
 # Replace with actual COM port where XAudio is connected
 COM_PORT = "COM99"
