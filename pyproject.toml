@@ -16,7 +16,7 @@ dependencies = {file = ["requirements.txt"]}
 readme = {file = ["README.md"]}
 
 [tool.setuptools_scm]
-write_to = "src/device_communication/_version.py"
+write_to = "src/xaudio/_version.py"
 
 [tool.setuptools.dynamic.optional-dependencies]
 test = {file = ["requirements-test.txt"]}
