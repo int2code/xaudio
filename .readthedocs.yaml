@@ -11,7 +11,7 @@ build:
     python: "3.11"
   jobs:
     pre_build:
-      - sphinx-apidoc -o docs/modules src/device_communication
+      - sphinx-apidoc -o docs/modules src/xaudio
 
 # Build documentation in the "docs/" directory with Sphinx
 sphinx:
