@@ -7,6 +7,11 @@ maintainers = [
   {name = "Piotr Sznapka", email = "piotr.sznapka@int2code.com" } # Optional
 ]
 dynamic = ["dependencies", "version", "readme", "optional-dependencies"]
+classifiers = [
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+]
 
 [tool.setuptools.packages.find]
 where = ["src"]
