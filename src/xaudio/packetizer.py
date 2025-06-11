@@ -19,7 +19,7 @@ class XAudioFramesParser(BaseFrameParser):
     CRC_SIZE = 4
 
     @classmethod
-    def frame(cls, data: bytearray) -> bytearray:
+    def build_frame(cls, data: bytearray) -> bytearray:
         """Frame data buffer
 
         Calculate 4B CRC32/MPEG2 and encode whole buffer with COBS - end with terminator.
@@ -28,7 +28,9 @@ class XAudioFramesParser(BaseFrameParser):
         :return: encoded data with CRC and terminator
 
         """
-        return cobs.encode(data + mpeg2(data).to_bytes(cls.CRC_SIZE)) + cls.TERMINATOR
+        return cobs.encode(
+            data + mpeg2(data).to_bytes(cls.CRC_SIZE, byteorder='little')
+        ) + cls.TERMINATOR
 
     @classmethod
     def parse_frames(
@@ -98,4 +100,4 @@ class XAudioPacketizer(Packetizer):
 
     def send(self, data: bytearray):
         """Prepare packet and send it to transport for write"""
-        self.transport.write(self.FRAME_PARSER_CLS.frame(data))
+        self.transport.write(self.FRAME_PARSER_CLS.build_frame(data))
