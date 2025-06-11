@@ -51,7 +51,7 @@ class XAudioFramesParser(BaseFrameParser):
             packet, buffer = buffer.split(cls.TERMINATOR, 1)
             packet = cobs.decode(packet)
             packet, crc = packet[: -cls.CRC_SIZE], packet[-cls.CRC_SIZE :]
-            if not crc == mpeg2(packet).to_bytes(cls.CRC_SIZE):
+            if not crc == mpeg2(packet).to_bytes(cls.CRC_SIZE, byteorder='little'):
                 dropped.extend(packet + crc)
             else:
                 packets.append(packet)
