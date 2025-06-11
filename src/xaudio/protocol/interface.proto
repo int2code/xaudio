@@ -47,6 +47,22 @@ enum ConfigJsonState
   CONFIG_JSON_STATE_INVALID = 2;
 }
 
+enum A2BMailboxAccessType
+{
+  A2B_MAILBOX_ACCESS_TYPE_UNSPECIFIED = 0;
+  A2B_MAILBOX_ACCESS_TYPE_WRITE = 1;
+  A2B_MAILBOX_ACCESS_TYPE_READ = 2;
+}
+
+enum A2BMailboxAccessStatus
+{
+  A2B_MAILBOX_STATUS_UNSPECIFIED = 0;
+  A2B_MAILBOX_STATUS_OK = 1;
+  A2B_MAILBOX_STATUS_GENERAL_FAIL = 2;
+  A2B_MAILBOX_STATUS_NOT_EMPTY = 3;
+  A2B_MAILBOX_STATUS_NOT_FULL = 4;
+}
+
 message ResetRequest {
   optional bool dummy = 1;
 }
@@ -88,6 +104,23 @@ message I2COverDistanceResponse
 {
   I2COverDistanceAccessType access_type = 1;
   repeated uint32 value = 2 [(nanopb).max_count = 10];
+}
+
+message A2BMailboxTransferRequest
+{
+  uint32 mailbox_id = 1;
+  A2BMailboxAccessType access_type = 2;
+  uint32 node = 3;
+  uint32 bytes = 4;
+  repeated uint32 data = 5[(nanopb).max_count = 4];
+}
+
+message A2BMailboxTransferResponse
+{
+  uint32 mailbox_id = 1;
+  A2BMailboxAccessType access_type = 2;
+  A2BMailboxAccessStatus access_status = 3;
+  repeated uint32 data = 4[(nanopb).max_count = 4];
 }
 
 message NoDataResponse
@@ -142,6 +175,7 @@ message PositiveResponse
     StatusResponse status_response = 2;
     InfoResponse info_response = 3;
     I2COverDistanceResponse i2c_over_distance_response = 4;
+    A2BMailboxTransferResponse a2b_mailbox_transfer_response = 5;
   }
 }
 
@@ -165,6 +199,7 @@ message RequestPacket {
     InfoRequest info_request = 4;
     SetSerialRequest set_serial_request = 5;
     I2COverDistanceRequest i2c_over_distance_request = 6;
+    A2BMailboxTransferRequest a2b_mailbox_transfer_request = 7;
   }
 }
 
