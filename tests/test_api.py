@@ -58,14 +58,14 @@ class TestXAudioApi:
         """Verify info request sending and unpacking."""
         expected_request = (
             ANY,
-            XAudioFramesParser.frame(
+            XAudioFramesParser.build_frame(
                 RequestPacket(info_request=InfoRequest(dummy=True)).SerializeToString()
             ),
         )
         expected_response = InfoResponse(
             hardware_revision=1, software_revision="2", serial_number="3"
         )
-        raw_response = XAudioFramesParser.frame(
+        raw_response = XAudioFramesParser.build_frame(
             ResponsePacket(
                 positive_response=PositiveResponse(info_response=expected_response)
             ).SerializeToString()
@@ -80,14 +80,14 @@ class TestXAudioApi:
         """Verify reset request sending and unpacking."""
         expected_request = (
             ANY,
-            XAudioFramesParser.frame(
+            XAudioFramesParser.build_frame(
                 RequestPacket(
                     reset_request=ResetRequest(dummy=True)
                 ).SerializeToString()
             ),
         )
         expected_response = NoDataResponse(dummy=True)
-        raw_response = XAudioFramesParser.frame(
+        raw_response = XAudioFramesParser.build_frame(
             ResponsePacket(
                 positive_response=PositiveResponse(no_data_response=expected_response)
             ).SerializeToString()
@@ -102,7 +102,7 @@ class TestXAudioApi:
         """Verify reset request sending and unpacking."""
         expected_request = (
             ANY,
-            XAudioFramesParser.frame(
+            XAudioFramesParser.build_frame(
                 RequestPacket(
                     status_request=StatusRequest(dummy=True)
                 ).SerializeToString()
@@ -125,7 +125,7 @@ class TestXAudioApi:
                 a2b_state=SlaveA2BState.SLAVE_A2B_STATE_UNSPECIFIED
             ),
         )
-        raw_response = XAudioFramesParser.frame(
+        raw_response = XAudioFramesParser.build_frame(
             ResponsePacket(
                 positive_response=PositiveResponse(status_response=expected_response)
             ).SerializeToString()
@@ -140,14 +140,14 @@ class TestXAudioApi:
         """Verify reset request sending and unpacking."""
         expected_request = (
             ANY,
-            XAudioFramesParser.frame(
+            XAudioFramesParser.build_frame(
                 RequestPacket(
                     a2b_discover_request=A2BDiscoverRequest(dummy=True)
                 ).SerializeToString()
             ),
         )
         expected_response = NoDataResponse(dummy=True)
-        raw_response = XAudioFramesParser.frame(
+        raw_response = XAudioFramesParser.build_frame(
             ResponsePacket(
                 positive_response=PositiveResponse(no_data_response=expected_response)
             ).SerializeToString()
@@ -162,7 +162,7 @@ class TestXAudioApi:
         """Verify i2c_over_distance request sending and unpacking."""
         expected_request = (
             ANY,
-            XAudioFramesParser.frame(
+            XAudioFramesParser.build_frame(
                 RequestPacket(
                     i2c_over_distance_request=I2COverDistanceRequest(
                         access_type=I2COverDistanceAccessType.I2C_OVER_DISTANCE_READ,
@@ -174,7 +174,7 @@ class TestXAudioApi:
             ),
         )
         expected_response = I2COverDistanceResponse(value=[9])
-        raw_response = XAudioFramesParser.frame(
+        raw_response = XAudioFramesParser.build_frame(
             ResponsePacket(
                 positive_response=PositiveResponse(
                     i2c_over_distance_response=expected_response

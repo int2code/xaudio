@@ -6,7 +6,9 @@ import pytest
 
 from xaudio.clients import XAudioClient
 from xaudio.communication_handlers import XAudioSerialCommHandler
+from xaudio.exceptions import XAudioResponseError
 from xaudio.protocol.interface_pb2 import (  # pylint:disable=no-name-in-module
+    NoDataResponse,
     RequestPacket,
 )
 
@@ -20,17 +22,17 @@ class TestXAudioClient:
             XAudioSerialCommHandler, send=DEFAULT, receive=Mock(return_value=[b""] * 2)
         ):
             client = XAudioClient()
-            with pytest.raises(RuntimeError, match="Too many responses"):
+            with pytest.raises(XAudioResponseError, match="Too many responses"):
                 client.request(RequestPacket())
 
-    def test_response_packet_is_missing_msg(self):
-        """Verify exception raise when response is missing Positive/Negative msg"""
+    def test_response_no_data_packet(self):
+        """Verify no data packet is returned on empty bytes."""
         with patch.multiple(
             XAudioSerialCommHandler, send=DEFAULT, receive=Mock(return_value=[b""])
         ):
             client = XAudioClient()
-            with pytest.raises(RuntimeError, match="missing Positive or Negative msg"):
-                client.request(RequestPacket())
+            response = client.request(RequestPacket())
+            assert isinstance(response, NoDataResponse)
 
     def test_negative_response_raise_exception(self):
         """Verify exception is raised when device sends negative response"""
@@ -40,5 +42,5 @@ class TestXAudioClient:
             receive=Mock(return_value=[b"\x12\x02\x08\x01"]),
         ):
             client = XAudioClient()
-            with pytest.raises(RuntimeError, match="returned negative response"):
+            with pytest.raises(XAudioResponseError, match="returned negative response"):
                 client.request(RequestPacket())
