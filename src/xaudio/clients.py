@@ -1,9 +1,10 @@
 """Clients implementation to send/read requests/responses to the device."""
 
-from typing import NewType, Union
 import time
+from typing import Union
 
 from xaudio.communication_handlers import XAudioSerialCommHandler
+from xaudio.exceptions import XAudioResponseError, XAudioTimeoutError
 from xaudio.protocol.interface_pb2 import (  # pylint:disable=no-name-in-module
     I2COverDistanceResponse,
     InfoResponse,
@@ -13,7 +14,6 @@ from xaudio.protocol.interface_pb2 import (  # pylint:disable=no-name-in-module
     ResponsePacket,
     StatusResponse,
 )
-from xaudio.exceptions import XAudioTimeoutError, XAudioResponseError
 
 OneOfPositiveResponseMsg = Union[
     NoDataResponse, StatusResponse, InfoResponse, I2COverDistanceResponse
@@ -23,7 +23,12 @@ OneOfPositiveResponseMsg = Union[
 class XAudioClient:  # pylint:disable=too-few-public-methods
     """XAudio client with generic request implementation."""
 
-    def __init__(self, port_name: str = "loop://", name: str = "XAudioHandler", timeout: int|float = 2):
+    def __init__(
+        self,
+        port_name: str = "loop://",
+        name: str = "XAudioHandler",
+        timeout: int | float = 2,
+    ):
         """Initialize instance.
 
         :param port_name: for serial (i.e. COM2)
@@ -53,9 +58,7 @@ class XAudioClient:  # pylint:disable=too-few-public-methods
             raise XAudioTimeoutError(f"No response in expected time for\n{data}")
 
         if len(responses) > 1:
-            raise XAudioResponseError(
-                f"Too many responses from device: {responses}"
-            )
+            raise XAudioResponseError(f"Too many responses from device: {responses}")
 
         if responses[0] == b"":
             return NoDataResponse()

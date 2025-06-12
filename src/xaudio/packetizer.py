@@ -28,9 +28,10 @@ class XAudioFramesParser(BaseFrameParser):
         :return: encoded data with CRC and terminator
 
         """
-        return cobs.encode(
-            data + mpeg2(data).to_bytes(cls.CRC_SIZE, byteorder='little')
-        ) + cls.TERMINATOR
+        return (
+            cobs.encode(data + mpeg2(data).to_bytes(cls.CRC_SIZE, byteorder="little"))
+            + cls.TERMINATOR
+        )
 
     @classmethod
     def parse_frames(
@@ -51,7 +52,7 @@ class XAudioFramesParser(BaseFrameParser):
             packet, buffer = buffer.split(cls.TERMINATOR, 1)
             packet = cobs.decode(packet)
             packet, crc = packet[: -cls.CRC_SIZE], packet[-cls.CRC_SIZE :]
-            if not crc == mpeg2(packet).to_bytes(cls.CRC_SIZE, byteorder='little'):
+            if not crc == mpeg2(packet).to_bytes(cls.CRC_SIZE, byteorder="little"):
                 dropped.extend(packet + crc)
             else:
                 packets.append(packet)
