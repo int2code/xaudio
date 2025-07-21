@@ -2,9 +2,13 @@
 
 from typing import List
 
+from google.protobuf.internal.containers import RepeatedScalarFieldContainer
+
 from xaudio.clients import XAudioClient
 from xaudio.protocol.interface_pb2 import (  # pylint:disable=no-name-in-module
     A2BDiscoverRequest,
+    A2BMailboxAccessType,
+    A2BMailboxTransferRequest,
     I2COverDistanceAccessType,
     I2COverDistanceRequest,
     I2COverDistanceResponse,
@@ -14,7 +18,7 @@ from xaudio.protocol.interface_pb2 import (  # pylint:disable=no-name-in-module
     RequestPacket,
     ResetRequest,
     StatusRequest,
-    StatusResponse,
+    StatusResponse, A2BMailboxTransferResponse,
 )
 
 
@@ -92,6 +96,37 @@ class XAudioApi:
         )
         request_packet = RequestPacket(
             i2c_over_distance_request=i2c_over_distance_request
+        )
+        response = self.client.request(request_packet)
+        return response
+
+    def a2b_mailbox_transfer(
+        self,
+        mailbox_id: int,
+        access_type: A2BMailboxAccessType,
+        node: int,
+        _bytes: int,
+        data: RepeatedScalarFieldContainer[int],
+    ) -> A2BMailboxTransferResponse:
+        """Send/read mailbox data to/from A2B transceiver.
+
+        :param mailbox_id: from json configuration file
+        :param access_type: read/write/unspecified
+        :param node: id from json configuration file (Slave Node)
+        :param _bytes: number of bytes in data
+        :param data: to send
+        :return: refer to A2BMailboxTransferResponse
+
+        """
+        a2b_mailbox_transfer_request = A2BMailboxTransferRequest(
+            mailbox_id=mailbox_id,
+            access_type=access_type,
+            node=node,
+            bytes=_bytes,
+            data=data,
+        )
+        request_packet = RequestPacket(
+            a2b_mailbox_transfer_request=a2b_mailbox_transfer_request
         )
         response = self.client.request(request_packet)
         return response

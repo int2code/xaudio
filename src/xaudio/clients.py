@@ -13,10 +13,11 @@ from xaudio.protocol.interface_pb2 import (  # pylint:disable=no-name-in-module
     RequestPacket,
     ResponsePacket,
     StatusResponse,
+    A2BMailboxTransferResponse
 )
 
 OneOfPositiveResponseMsg = Union[
-    NoDataResponse, StatusResponse, InfoResponse, I2COverDistanceResponse
+    NoDataResponse, StatusResponse, InfoResponse, I2COverDistanceResponse, A2BMailboxTransferResponse
 ]
 
 

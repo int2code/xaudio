@@ -1,6 +1,6 @@
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -52,6 +52,20 @@ class ConfigJsonState(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     CONFIG_JSON_STATE_VALID: _ClassVar[ConfigJsonState]
     CONFIG_JSON_STATE_INVALID: _ClassVar[ConfigJsonState]
 
+class A2BMailboxAccessType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = ()
+    A2B_MAILBOX_ACCESS_TYPE_UNSPECIFIED: _ClassVar[A2BMailboxAccessType]
+    A2B_MAILBOX_ACCESS_TYPE_WRITE: _ClassVar[A2BMailboxAccessType]
+    A2B_MAILBOX_ACCESS_TYPE_READ: _ClassVar[A2BMailboxAccessType]
+
+class A2BMailboxAccessStatus(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = ()
+    A2B_MAILBOX_STATUS_UNSPECIFIED: _ClassVar[A2BMailboxAccessStatus]
+    A2B_MAILBOX_STATUS_OK: _ClassVar[A2BMailboxAccessStatus]
+    A2B_MAILBOX_STATUS_GENERAL_FAIL: _ClassVar[A2BMailboxAccessStatus]
+    A2B_MAILBOX_STATUS_NOT_EMPTY: _ClassVar[A2BMailboxAccessStatus]
+    A2B_MAILBOX_STATUS_NOT_FULL: _ClassVar[A2BMailboxAccessStatus]
+
 A2B_FAULT_LOCATION_UNSPECIFIED: A2BFaultLocation
 A2B_FAULT_LOCATION_MASTER: A2BFaultLocation
 A2B_FAULT_LOCATION_SLAVE: A2BFaultLocation
@@ -74,6 +88,14 @@ I2C_OVER_DISTANCE_READ: I2COverDistanceAccessType
 CONFIG_JSON_STATE_UNSPECIFIED: ConfigJsonState
 CONFIG_JSON_STATE_VALID: ConfigJsonState
 CONFIG_JSON_STATE_INVALID: ConfigJsonState
+A2B_MAILBOX_ACCESS_TYPE_UNSPECIFIED: A2BMailboxAccessType
+A2B_MAILBOX_ACCESS_TYPE_WRITE: A2BMailboxAccessType
+A2B_MAILBOX_ACCESS_TYPE_READ: A2BMailboxAccessType
+A2B_MAILBOX_STATUS_UNSPECIFIED: A2BMailboxAccessStatus
+A2B_MAILBOX_STATUS_OK: A2BMailboxAccessStatus
+A2B_MAILBOX_STATUS_GENERAL_FAIL: A2BMailboxAccessStatus
+A2B_MAILBOX_STATUS_NOT_EMPTY: A2BMailboxAccessStatus
+A2B_MAILBOX_STATUS_NOT_FULL: A2BMailboxAccessStatus
 
 class ResetRequest(_message.Message):
     __slots__ = ("dummy",)
@@ -148,6 +170,45 @@ class I2COverDistanceResponse(_message.Message):
         self,
         access_type: _Optional[_Union[I2COverDistanceAccessType, str]] = ...,
         value: _Optional[_Iterable[int]] = ...,
+    ) -> None: ...
+
+class A2BMailboxTransferRequest(_message.Message):
+    __slots__ = ("mailbox_id", "access_type", "node", "bytes", "data")
+    MAILBOX_ID_FIELD_NUMBER: _ClassVar[int]
+    ACCESS_TYPE_FIELD_NUMBER: _ClassVar[int]
+    NODE_FIELD_NUMBER: _ClassVar[int]
+    BYTES_FIELD_NUMBER: _ClassVar[int]
+    DATA_FIELD_NUMBER: _ClassVar[int]
+    mailbox_id: int
+    access_type: A2BMailboxAccessType
+    node: int
+    bytes: int
+    data: _containers.RepeatedScalarFieldContainer[int]
+    def __init__(
+        self,
+        mailbox_id: _Optional[int] = ...,
+        access_type: _Optional[_Union[A2BMailboxAccessType, str]] = ...,
+        node: _Optional[int] = ...,
+        bytes: _Optional[int] = ...,
+        data: _Optional[_Iterable[int]] = ...,
+    ) -> None: ...
+
+class A2BMailboxTransferResponse(_message.Message):
+    __slots__ = ("mailbox_id", "access_type", "access_status", "data")
+    MAILBOX_ID_FIELD_NUMBER: _ClassVar[int]
+    ACCESS_TYPE_FIELD_NUMBER: _ClassVar[int]
+    ACCESS_STATUS_FIELD_NUMBER: _ClassVar[int]
+    DATA_FIELD_NUMBER: _ClassVar[int]
+    mailbox_id: int
+    access_type: A2BMailboxAccessType
+    access_status: A2BMailboxAccessStatus
+    data: _containers.RepeatedScalarFieldContainer[int]
+    def __init__(
+        self,
+        mailbox_id: _Optional[int] = ...,
+        access_type: _Optional[_Union[A2BMailboxAccessType, str]] = ...,
+        access_status: _Optional[_Union[A2BMailboxAccessStatus, str]] = ...,
+        data: _Optional[_Iterable[int]] = ...,
     ) -> None: ...
 
 class NoDataResponse(_message.Message):
@@ -244,15 +305,18 @@ class PositiveResponse(_message.Message):
         "status_response",
         "info_response",
         "i2c_over_distance_response",
+        "a2b_mailbox_transfer_response",
     )
     NO_DATA_RESPONSE_FIELD_NUMBER: _ClassVar[int]
     STATUS_RESPONSE_FIELD_NUMBER: _ClassVar[int]
     INFO_RESPONSE_FIELD_NUMBER: _ClassVar[int]
     I2C_OVER_DISTANCE_RESPONSE_FIELD_NUMBER: _ClassVar[int]
+    A2B_MAILBOX_TRANSFER_RESPONSE_FIELD_NUMBER: _ClassVar[int]
     no_data_response: NoDataResponse
     status_response: StatusResponse
     info_response: InfoResponse
     i2c_over_distance_response: I2COverDistanceResponse
+    a2b_mailbox_transfer_response: A2BMailboxTransferResponse
     def __init__(
         self,
         no_data_response: _Optional[_Union[NoDataResponse, _Mapping]] = ...,
@@ -260,6 +324,9 @@ class PositiveResponse(_message.Message):
         info_response: _Optional[_Union[InfoResponse, _Mapping]] = ...,
         i2c_over_distance_response: _Optional[
             _Union[I2COverDistanceResponse, _Mapping]
+        ] = ...,
+        a2b_mailbox_transfer_response: _Optional[
+            _Union[A2BMailboxTransferResponse, _Mapping]
         ] = ...,
     ) -> None: ...
 
@@ -281,6 +348,7 @@ class RequestPacket(_message.Message):
         "info_request",
         "set_serial_request",
         "i2c_over_distance_request",
+        "a2b_mailbox_transfer_request",
     )
     RESET_REQUEST_FIELD_NUMBER: _ClassVar[int]
     A2B_DISCOVER_REQUEST_FIELD_NUMBER: _ClassVar[int]
@@ -288,12 +356,14 @@ class RequestPacket(_message.Message):
     INFO_REQUEST_FIELD_NUMBER: _ClassVar[int]
     SET_SERIAL_REQUEST_FIELD_NUMBER: _ClassVar[int]
     I2C_OVER_DISTANCE_REQUEST_FIELD_NUMBER: _ClassVar[int]
+    A2B_MAILBOX_TRANSFER_REQUEST_FIELD_NUMBER: _ClassVar[int]
     reset_request: ResetRequest
     a2b_discover_request: A2BDiscoverRequest
     status_request: StatusRequest
     info_request: InfoRequest
     set_serial_request: SetSerialRequest
     i2c_over_distance_request: I2COverDistanceRequest
+    a2b_mailbox_transfer_request: A2BMailboxTransferRequest
     def __init__(
         self,
         reset_request: _Optional[_Union[ResetRequest, _Mapping]] = ...,
@@ -303,6 +373,9 @@ class RequestPacket(_message.Message):
         set_serial_request: _Optional[_Union[SetSerialRequest, _Mapping]] = ...,
         i2c_over_distance_request: _Optional[
             _Union[I2COverDistanceRequest, _Mapping]
+        ] = ...,
+        a2b_mailbox_transfer_request: _Optional[
+            _Union[A2BMailboxTransferRequest, _Mapping]
         ] = ...,
     ) -> None: ...
 
