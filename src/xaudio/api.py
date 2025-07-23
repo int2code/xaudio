@@ -147,15 +147,31 @@ class XAudioApi:
             node: int,
             mailbox_id: int,
             access_type: A2BMailboxAccessType,
+            _bytes: Optional[int] = None,
             data: Optional[RepeatedScalarFieldContainer[int]] = None,
     ) -> A2BMailboxTransferResponse:
         """Send/read mailbox data to/from A2B transceiver.
 
+        Sample use:
+
+            >>> client = XAudioClient("COM5")
+            >>> to_send = [0x00, 0x01, 0x02, 0x03]  # 4 bytes
+            >>> write = A2BMailboxAccessType.A2B_MAILBOX_ACCESS_TYPE_WRITE
+            >>> api = XAudioApi(client)
+            >>> resp = api.a2b_mailbox_transfer(
+            ...     node=0,
+            ...     access_type=write,
+            ...     data=to_send,
+            ...   # _bytes=4,  # len(data) required on read, auto calculated on write
+            ... )
+            >>> print(resp)
+
         :param node: id from json configuration file (Slave)
         :param mailbox_id: slave mailbox id from config file
         :param access_type: read/write/unspecified
+        :param _bytes: number of bytes to read or write, on write it's len(data)
         :param data: list of bytes to send
-        :return: refer to A2BMailboxTransferResponse TODO
+        :return: refer to A2BMailboxTransferResponse fields
 
         """
         if data is None:
@@ -164,7 +180,7 @@ class XAudioApi:
             mailbox_id=mailbox_id,
             access_type=access_type,
             node=node,
-            bytes=len(data),
+            bytes=_bytes or len(data),
             data=data,
         )
         request_packet = RequestPacket(
