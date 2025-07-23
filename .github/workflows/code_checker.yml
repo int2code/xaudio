@@ -40,3 +40,10 @@ jobs:
       run: |
         files=$(cat changed_files.txt)
         black --check --diff $files
+
+    - name: Analysing the code with isort
+      if: steps.gather.outputs.files != ''
+      run: |
+        files=$(cat changed_files.txt)
+        isort \
+          --check-only $files

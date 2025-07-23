@@ -12,6 +12,10 @@ from xaudio.packetizer import XAudioFramesParser
 from xaudio.protocol.interface_pb2 import (  # pylint:disable=no-name-in-module
     A2BDiscoverRequest,
     A2BFaultLocation,
+    A2BMailboxAccessStatus,
+    A2BMailboxAccessType,
+    A2BMailboxTransferRequest,
+    A2BMailboxTransferResponse,
     ConfigJsonState,
     DeviceState,
     I2COverDistanceAccessType,
@@ -168,7 +172,11 @@ class TestXAudioApi:
                         access_type=I2COverDistanceAccessType.I2C_OVER_DISTANCE_READ,
                         peripheral_i2c_addr=1,
                         node=2,
-                        data=[I2COverDistanceRequest.Data(reg=8, value=9)],
+                        data=[
+                            I2COverDistanceRequest.Data(reg=8, value=9),
+                            I2COverDistanceRequest.Data(reg=10, value=None),
+                            I2COverDistanceRequest.Data(reg=11, value=None),
+                        ],
                     )
                 ).SerializeToString()
             ),
@@ -186,7 +194,46 @@ class TestXAudioApi:
                 access_type=I2COverDistanceAccessType.I2C_OVER_DISTANCE_READ,
                 peripheral_i2c_addr=1,
                 node=2,
-                data=[I2COverDistanceRequest.Data(reg=8, value=9)],
+                data=[(8, 9), (10, None), (11,)],
+            )
+
+        assert response == expected_response
+        mock_rw.assert_called_once_with(*expected_request)
+
+    def test_a2b_mailbox_transfer(self, xaudio_api):
+        """Verify a2b_mailbox_transfer request sending and unpacking."""
+        expected_request = (
+            ANY,
+            XAudioFramesParser.build_frame(
+                RequestPacket(
+                    a2b_mailbox_transfer_request=A2BMailboxTransferRequest(
+                        mailbox_id=0,
+                        access_type=A2BMailboxAccessType.A2B_MAILBOX_ACCESS_TYPE_WRITE,
+                        node=0,
+                        bytes=4,
+                        data=[0x00, 0x01, 0x02, 0x03],
+                    )
+                ).SerializeToString()
+            ),
+        )
+        expected_response = A2BMailboxTransferResponse(
+            access_type=A2BMailboxAccessType.A2B_MAILBOX_ACCESS_TYPE_WRITE,
+            access_status=A2BMailboxAccessStatus.A2B_MAILBOX_STATUS_OK,
+            data=[0x00, 0x01, 0x02, 0x03],
+        )
+        raw_response = XAudioFramesParser.build_frame(
+            ResponsePacket(
+                positive_response=PositiveResponse(
+                    a2b_mailbox_transfer_response=expected_response
+                )
+            ).SerializeToString()
+        )
+        with self.patch_serial_on_write_read(raw_response) as mock_rw:
+            response = xaudio_api.a2b_mailbox_transfer(
+                node=0,
+                mailbox_id=0,
+                access_type=A2BMailboxAccessType.A2B_MAILBOX_ACCESS_TYPE_WRITE,
+                data=[0x00, 0x01, 0x02, 0x03],
             )
 
         assert response == expected_response

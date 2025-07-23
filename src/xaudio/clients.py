@@ -6,6 +6,7 @@ from typing import Union
 from xaudio.communication_handlers import XAudioSerialCommHandler
 from xaudio.exceptions import XAudioResponseError, XAudioTimeoutError
 from xaudio.protocol.interface_pb2 import (  # pylint:disable=no-name-in-module
+    A2BMailboxTransferResponse,
     I2COverDistanceResponse,
     InfoResponse,
     NegativeResponse,
@@ -16,7 +17,11 @@ from xaudio.protocol.interface_pb2 import (  # pylint:disable=no-name-in-module
 )
 
 OneOfPositiveResponseMsg = Union[
-    NoDataResponse, StatusResponse, InfoResponse, I2COverDistanceResponse
+    NoDataResponse,
+    StatusResponse,
+    InfoResponse,
+    I2COverDistanceResponse,
+    A2BMailboxTransferResponse,
 ]
 
 
