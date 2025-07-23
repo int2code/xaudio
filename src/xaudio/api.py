@@ -2,8 +2,6 @@
 
 from typing import List, Optional, Tuple
 
-from google.protobuf.internal.containers import RepeatedScalarFieldContainer
-
 from xaudio.clients import XAudioClient
 from xaudio.protocol.interface_pb2 import (  # pylint:disable=no-name-in-module
     A2BDiscoverRequest,
@@ -149,7 +147,7 @@ class XAudioApi:
         mailbox_id: int,
         access_type: A2BMailboxAccessType,
         _bytes: Optional[int] = None,
-        data: Optional[RepeatedScalarFieldContainer[int]] = None,
+        data: Optional[list[int]] = None,
     ) -> A2BMailboxTransferResponse:
         """Send/read mailbox data to/from A2B transceiver.
 
