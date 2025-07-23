@@ -5,7 +5,6 @@ from unittest.mock import ANY, patch
 
 import pytest
 from device_communication.serial.servers import ThreadedSerialServer
-from google.protobuf.internal.containers import RepeatedScalarFieldContainer
 
 from xaudio.api import XAudioApi
 from xaudio.clients import XAudioClient
@@ -13,6 +12,10 @@ from xaudio.packetizer import XAudioFramesParser
 from xaudio.protocol.interface_pb2 import (  # pylint:disable=no-name-in-module
     A2BDiscoverRequest,
     A2BFaultLocation,
+    A2BMailboxAccessStatus,
+    A2BMailboxAccessType,
+    A2BMailboxTransferRequest,
+    A2BMailboxTransferResponse,
     ConfigJsonState,
     DeviceState,
     I2COverDistanceAccessType,
@@ -30,8 +33,7 @@ from xaudio.protocol.interface_pb2 import (  # pylint:disable=no-name-in-module
     StatusResponse,
     StatusRespRoleA2BMaster,
     StatusRespRoleA2BSlave,
-    UsbAudioStreamState, A2BMailboxTransferRequest, A2BMailboxAccessType, A2BMailboxTransferResponse,
-    A2BMailboxAccessStatus,
+    UsbAudioStreamState,
 )
 
 
@@ -209,7 +211,7 @@ class TestXAudioApi:
                         access_type=A2BMailboxAccessType.A2B_MAILBOX_ACCESS_TYPE_WRITE,
                         node=0,
                         bytes=4,
-                        data=[0x00, 0x01, 0x02, 0x03]
+                        data=[0x00, 0x01, 0x02, 0x03],
                     )
                 ).SerializeToString()
             ),
@@ -236,4 +238,3 @@ class TestXAudioApi:
 
         assert response == expected_response
         mock_rw.assert_called_once_with(*expected_request)
-
