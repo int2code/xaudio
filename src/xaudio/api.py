@@ -9,6 +9,7 @@ from xaudio.protocol.interface_pb2 import (  # pylint:disable=no-name-in-module
     A2BDiscoverRequest,
     A2BMailboxAccessType,
     A2BMailboxTransferRequest,
+    A2BMailboxTransferResponse,
     I2COverDistanceAccessType,
     I2COverDistanceRequest,
     I2COverDistanceResponse,
@@ -18,7 +19,7 @@ from xaudio.protocol.interface_pb2 import (  # pylint:disable=no-name-in-module
     RequestPacket,
     ResetRequest,
     StatusRequest,
-    StatusResponse, A2BMailboxTransferResponse,
+    StatusResponse,
 )
 
 
@@ -74,7 +75,7 @@ class XAudioApi:
 
     @staticmethod
     def _parse_i2c_data_to_send(
-            data: List[Tuple[int, Optional[int]]]
+        data: List[Tuple[int, Optional[int]]],
     ) -> List[I2COverDistanceRequest.Data]:
         """Parse pairs of registries and values into I2COverDistanceRequest.Data structure."""
         parsed_data = []
@@ -83,11 +84,11 @@ class XAudioApi:
         return parsed_data
 
     def i2c_over_distance(
-            self,
-            node: int,
-            access_type: "I2COverDistanceAccessType",
-            data: List[Tuple[int, Optional[int]]],  #  "List[I2COverDistanceRequest.Data]",
-            peripheral_i2c_addr: Optional[int] = None
+        self,
+        node: int,
+        access_type: "I2COverDistanceAccessType",
+        data: List[Tuple[int, Optional[int]]],  #  "List[I2COverDistanceRequest.Data]",
+        peripheral_i2c_addr: Optional[int] = None,
     ) -> I2COverDistanceResponse:
         """Send I2C message to a node or its peripherals.
 
@@ -143,12 +144,12 @@ class XAudioApi:
         return response
 
     def a2b_mailbox_transfer(
-            self,
-            node: int,
-            mailbox_id: int,
-            access_type: A2BMailboxAccessType,
-            _bytes: Optional[int] = None,
-            data: Optional[RepeatedScalarFieldContainer[int]] = None,
+        self,
+        node: int,
+        mailbox_id: int,
+        access_type: A2BMailboxAccessType,
+        _bytes: Optional[int] = None,
+        data: Optional[RepeatedScalarFieldContainer[int]] = None,
     ) -> A2BMailboxTransferResponse:
         """Send/read mailbox data to/from A2B transceiver.
 
