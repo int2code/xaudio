@@ -2,8 +2,7 @@
 
 [MINOR] Added support for A2B Mailboxes
 
-- added API method `a2b_mailbox_transfer` to transfer data to and read from A2B slave 
-mailboxes. Modified 
+- added API method `a2b_mailbox_transfer` to transfer data to and read from A2B slave mailboxes 
 - modified `i2c_over_distance` API to better suite its usage
 - improved documentation, added sample use for mentioned methods
 
