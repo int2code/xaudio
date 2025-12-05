@@ -100,6 +100,21 @@ message I2COverDistanceRequest
   repeated Data data = 6 [(nanopb).max_count = 10];
 }
 
+message RegisterDumpRequest
+{
+  optional uint32 node_number = 1;
+}
+
+message RegisterDumpResponse
+{
+  message Data
+  {
+    uint32 reg = 1;
+    uint32 value = 2;
+  }
+  repeated Data data = 3 [(nanopb).max_count = 127];
+}
+
 message I2COverDistanceResponse
 {
   I2COverDistanceAccessType access_type = 1;
@@ -176,6 +191,7 @@ message PositiveResponse
     InfoResponse info_response = 3;
     I2COverDistanceResponse i2c_over_distance_response = 4;
     A2BMailboxTransferResponse a2b_mailbox_transfer_response = 5;
+    RegisterDumpResponse register_dump_response = 6;
   }
 }
 
@@ -200,6 +216,7 @@ message RequestPacket {
     SetSerialRequest set_serial_request = 5;
     I2COverDistanceRequest i2c_over_distance_request = 6;
     A2BMailboxTransferRequest a2b_mailbox_transfer_request = 7;
+    RegisterDumpRequest register_dump_request = 8;
   }
 }
 
