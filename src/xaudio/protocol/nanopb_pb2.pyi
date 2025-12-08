@@ -1,10 +1,13 @@
+from collections.abc import Iterable as _Iterable
+from typing import ClassVar as _ClassVar
+from typing import Optional as _Optional
+from typing import Union as _Union
+
+from google.protobuf import descriptor as _descriptor
 from google.protobuf import descriptor_pb2 as _descriptor_pb2
+from google.protobuf import message as _message
 from google.protobuf.internal import containers as _containers
 from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
-from google.protobuf import descriptor as _descriptor
-from google.protobuf import message as _message
-from collections.abc import Iterable as _Iterable
-from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
@@ -39,6 +42,7 @@ class DescriptorSize(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     DS_2: _ClassVar[DescriptorSize]
     DS_4: _ClassVar[DescriptorSize]
     DS_8: _ClassVar[DescriptorSize]
+
 FT_DEFAULT: FieldType
 FT_CALLBACK: FieldType
 FT_POINTER: FieldType
@@ -140,4 +144,45 @@ class NanoPBOptions(_message.Message):
     initializer: str
     discard_unused_automatic_types: bool
     discard_deprecated: bool
-    def __init__(self, max_size: _Optional[int] = ..., max_length: _Optional[int] = ..., max_count: _Optional[int] = ..., int_size: _Optional[_Union[IntSize, str]] = ..., enum_intsize: _Optional[_Union[IntSize, str]] = ..., type: _Optional[_Union[FieldType, str]] = ..., long_names: _Optional[bool] = ..., packed_struct: _Optional[bool] = ..., packed_enum: _Optional[bool] = ..., skip_message: _Optional[bool] = ..., no_unions: _Optional[bool] = ..., msgid: _Optional[int] = ..., anonymous_oneof: _Optional[bool] = ..., proto3: _Optional[bool] = ..., proto3_singular_msgs: _Optional[bool] = ..., enum_to_string: _Optional[bool] = ..., enum_validate: _Optional[bool] = ..., fixed_length: _Optional[bool] = ..., fixed_count: _Optional[bool] = ..., submsg_callback: _Optional[bool] = ..., mangle_names: _Optional[_Union[TypenameMangling, str]] = ..., callback_datatype: _Optional[str] = ..., callback_function: _Optional[str] = ..., descriptorsize: _Optional[_Union[DescriptorSize, str]] = ..., default_has: _Optional[bool] = ..., include: _Optional[_Iterable[str]] = ..., exclude: _Optional[_Iterable[str]] = ..., package: _Optional[str] = ..., type_override: _Optional[_Union[_descriptor_pb2.FieldDescriptorProto.Type, str]] = ..., label_override: _Optional[_Union[_descriptor_pb2.FieldDescriptorProto.Label, str]] = ..., sort_by_tag: _Optional[bool] = ..., fallback_type: _Optional[_Union[FieldType, str]] = ..., initializer: _Optional[str] = ..., discard_unused_automatic_types: _Optional[bool] = ..., discard_deprecated: _Optional[bool] = ...) -> None: ...
+    def __init__(
+        self,
+        max_size: _Optional[int] = ...,
+        max_length: _Optional[int] = ...,
+        max_count: _Optional[int] = ...,
+        int_size: _Optional[_Union[IntSize, str]] = ...,
+        enum_intsize: _Optional[_Union[IntSize, str]] = ...,
+        type: _Optional[_Union[FieldType, str]] = ...,
+        long_names: _Optional[bool] = ...,
+        packed_struct: _Optional[bool] = ...,
+        packed_enum: _Optional[bool] = ...,
+        skip_message: _Optional[bool] = ...,
+        no_unions: _Optional[bool] = ...,
+        msgid: _Optional[int] = ...,
+        anonymous_oneof: _Optional[bool] = ...,
+        proto3: _Optional[bool] = ...,
+        proto3_singular_msgs: _Optional[bool] = ...,
+        enum_to_string: _Optional[bool] = ...,
+        enum_validate: _Optional[bool] = ...,
+        fixed_length: _Optional[bool] = ...,
+        fixed_count: _Optional[bool] = ...,
+        submsg_callback: _Optional[bool] = ...,
+        mangle_names: _Optional[_Union[TypenameMangling, str]] = ...,
+        callback_datatype: _Optional[str] = ...,
+        callback_function: _Optional[str] = ...,
+        descriptorsize: _Optional[_Union[DescriptorSize, str]] = ...,
+        default_has: _Optional[bool] = ...,
+        include: _Optional[_Iterable[str]] = ...,
+        exclude: _Optional[_Iterable[str]] = ...,
+        package: _Optional[str] = ...,
+        type_override: _Optional[
+            _Union[_descriptor_pb2.FieldDescriptorProto.Type, str]
+        ] = ...,
+        label_override: _Optional[
+            _Union[_descriptor_pb2.FieldDescriptorProto.Label, str]
+        ] = ...,
+        sort_by_tag: _Optional[bool] = ...,
+        fallback_type: _Optional[_Union[FieldType, str]] = ...,
+        initializer: _Optional[str] = ...,
+        discard_unused_automatic_types: _Optional[bool] = ...,
+        discard_deprecated: _Optional[bool] = ...,
+    ) -> None: ...
