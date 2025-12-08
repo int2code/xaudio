@@ -190,11 +190,11 @@ class XAudioApi:
         response = self.client.request(request_packet)
         return response
 
-    def register_dump(self, node: int | None) -> RegisterDumpResponse:
-        """Dump register values of A2B transceiver.
+    def register_dump(self, node: Optional[int] = None) -> RegisterDumpResponse:
+        """Dump register values of the A2B transceiver.
 
-        :param node: id from json configuration file (Slave).
-        If None, dumps registries from A2Bridge
+        :param node: ID from the JSON configuration file (slave).
+            If ``None``, dumps registers from the A2Bridge.
         :return: refer to RegisterDumpResponse fields
 
         """
