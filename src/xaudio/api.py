@@ -14,6 +14,8 @@ from xaudio.protocol.interface_pb2 import (  # pylint:disable=no-name-in-module
     InfoRequest,
     InfoResponse,
     NoDataResponse,
+    RegisterDumpRequest,
+    RegisterDumpResponse,
     RequestPacket,
     ResetRequest,
     StatusRequest,
@@ -185,5 +187,18 @@ class XAudioApi:
         request_packet = RequestPacket(
             a2b_mailbox_transfer_request=a2b_mailbox_transfer_request
         )
+        response = self.client.request(request_packet)
+        return response
+
+    def register_dump(self, node: Optional[int] = None) -> RegisterDumpResponse:
+        """Dump register values of the A2B transceiver.
+
+        :param node: ID from the JSON configuration file (slave).
+            If ``None``, dumps registers from the A2Bridge.
+        :return: refer to RegisterDumpResponse fields
+
+        """
+        register_dump_request = RegisterDumpRequest(node_number=node)
+        request_packet = RequestPacket(register_dump_request=register_dump_request)
         response = self.client.request(request_packet)
         return response

@@ -25,6 +25,8 @@ from xaudio.protocol.interface_pb2 import (  # pylint:disable=no-name-in-module
     InfoResponse,
     NoDataResponse,
     PositiveResponse,
+    RegisterDumpRequest,
+    RegisterDumpResponse,
     RequestPacket,
     ResetRequest,
     ResponsePacket,
@@ -235,6 +237,43 @@ class TestXAudioApi:
                 access_type=A2BMailboxAccessType.A2B_MAILBOX_ACCESS_TYPE_WRITE,
                 data=[0x00, 0x01, 0x02, 0x03],
             )
+
+        assert response == expected_response
+        mock_rw.assert_called_once_with(*expected_request)
+
+    def test_register_dump(self, xaudio_api):
+        """Verify register dump request sending and unpacking."""
+        expected_request = (
+            ANY,
+            XAudioFramesParser.build_frame(
+                RequestPacket(
+                    register_dump_request=RegisterDumpRequest()
+                ).SerializeToString()
+            ),
+        )
+        expected_response = RegisterDumpResponse(
+            data=[
+                RegisterDumpResponse.Data(reg=0, value=0),
+                RegisterDumpResponse.Data(reg=1, value=1),
+                RegisterDumpResponse.Data(reg=2, value=2),
+                RegisterDumpResponse.Data(reg=3, value=3),
+                RegisterDumpResponse.Data(reg=4, value=4),
+                RegisterDumpResponse.Data(reg=5, value=5),
+                RegisterDumpResponse.Data(reg=6, value=6),
+                RegisterDumpResponse.Data(reg=7, value=7),
+                RegisterDumpResponse.Data(reg=8, value=8),
+                RegisterDumpResponse.Data(reg=9, value=9),
+            ]
+        )
+        raw_response = XAudioFramesParser.build_frame(
+            ResponsePacket(
+                positive_response=PositiveResponse(
+                    register_dump_response=expected_response
+                )
+            ).SerializeToString()
+        )
+        with self.patch_serial_on_write_read(raw_response) as mock_rw:
+            response = xaudio_api.register_dump()
 
         assert response == expected_response
         mock_rw.assert_called_once_with(*expected_request)

@@ -13,7 +13,7 @@ client = XAudioClient(COM_PORT, f"XAudio_on_{COM_PORT}")
 # Send sample request with the generic request
 # from XAudio client -> each request must return
 # single response msg even when calling reset
-sample_msg = RequestPacket(info_request=InfoRequest(dummy=True)).SerializeToString()
+sample_msg = RequestPacket(info_request=InfoRequest(dummy=True))
 response = client.request(sample_msg)
 print(response)
 

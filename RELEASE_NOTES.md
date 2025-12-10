@@ -1,3 +1,10 @@
+### 0.4.0
+[MINOR] Added protobuf definitions for A2Bridge version 1.3
+
+- added new protobuf defintions and regenerated the code
+- added `register_dump()` in api.pi
+- fixed samples/api.py
+
 ### 0.3.0
 
 [MINOR] Added support for A2B Mailboxes

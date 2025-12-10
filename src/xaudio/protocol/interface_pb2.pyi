@@ -98,44 +98,44 @@ A2B_MAILBOX_STATUS_NOT_EMPTY: A2BMailboxAccessStatus
 A2B_MAILBOX_STATUS_NOT_FULL: A2BMailboxAccessStatus
 
 class ResetRequest(_message.Message):
-    __slots__ = ("dummy",)
+    __slots__ = ()
     DUMMY_FIELD_NUMBER: _ClassVar[int]
     dummy: bool
-    def __init__(self, dummy: bool = ...) -> None: ...
+    def __init__(self, dummy: _Optional[bool] = ...) -> None: ...
 
 class StatusRequest(_message.Message):
-    __slots__ = ("dummy",)
+    __slots__ = ()
     DUMMY_FIELD_NUMBER: _ClassVar[int]
     dummy: bool
-    def __init__(self, dummy: bool = ...) -> None: ...
+    def __init__(self, dummy: _Optional[bool] = ...) -> None: ...
 
 class A2BDiscoverRequest(_message.Message):
-    __slots__ = ("dummy",)
+    __slots__ = ()
     DUMMY_FIELD_NUMBER: _ClassVar[int]
     dummy: bool
-    def __init__(self, dummy: bool = ...) -> None: ...
+    def __init__(self, dummy: _Optional[bool] = ...) -> None: ...
 
 class InfoRequest(_message.Message):
-    __slots__ = ("dummy",)
+    __slots__ = ()
     DUMMY_FIELD_NUMBER: _ClassVar[int]
     dummy: bool
-    def __init__(self, dummy: bool = ...) -> None: ...
+    def __init__(self, dummy: _Optional[bool] = ...) -> None: ...
 
 class SetSerialRequest(_message.Message):
-    __slots__ = ("serial_number", "lock")
+    __slots__ = ()
     SERIAL_NUMBER_FIELD_NUMBER: _ClassVar[int]
     LOCK_FIELD_NUMBER: _ClassVar[int]
     serial_number: str
     lock: bool
     def __init__(
-        self, serial_number: _Optional[str] = ..., lock: bool = ...
+        self, serial_number: _Optional[str] = ..., lock: _Optional[bool] = ...
     ) -> None: ...
 
 class I2COverDistanceRequest(_message.Message):
-    __slots__ = ("access_type", "peripheral_i2c_addr", "node", "data")
+    __slots__ = ()
 
     class Data(_message.Message):
-        __slots__ = ("reg", "value")
+        __slots__ = ()
         REG_FIELD_NUMBER: _ClassVar[int]
         VALUE_FIELD_NUMBER: _ClassVar[int]
         reg: int
@@ -160,8 +160,34 @@ class I2COverDistanceRequest(_message.Message):
         data: _Optional[_Iterable[_Union[I2COverDistanceRequest.Data, _Mapping]]] = ...,
     ) -> None: ...
 
+class RegisterDumpRequest(_message.Message):
+    __slots__ = ()
+    NODE_NUMBER_FIELD_NUMBER: _ClassVar[int]
+    node_number: int
+    def __init__(self, node_number: _Optional[int] = ...) -> None: ...
+
+class RegisterDumpResponse(_message.Message):
+    __slots__ = ()
+
+    class Data(_message.Message):
+        __slots__ = ()
+        REG_FIELD_NUMBER: _ClassVar[int]
+        VALUE_FIELD_NUMBER: _ClassVar[int]
+        reg: int
+        value: int
+        def __init__(
+            self, reg: _Optional[int] = ..., value: _Optional[int] = ...
+        ) -> None: ...
+
+    DATA_FIELD_NUMBER: _ClassVar[int]
+    data: _containers.RepeatedCompositeFieldContainer[RegisterDumpResponse.Data]
+    def __init__(
+        self,
+        data: _Optional[_Iterable[_Union[RegisterDumpResponse.Data, _Mapping]]] = ...,
+    ) -> None: ...
+
 class I2COverDistanceResponse(_message.Message):
-    __slots__ = ("access_type", "value")
+    __slots__ = ()
     ACCESS_TYPE_FIELD_NUMBER: _ClassVar[int]
     VALUE_FIELD_NUMBER: _ClassVar[int]
     access_type: I2COverDistanceAccessType
@@ -173,7 +199,7 @@ class I2COverDistanceResponse(_message.Message):
     ) -> None: ...
 
 class A2BMailboxTransferRequest(_message.Message):
-    __slots__ = ("mailbox_id", "access_type", "node", "bytes", "data")
+    __slots__ = ()
     MAILBOX_ID_FIELD_NUMBER: _ClassVar[int]
     ACCESS_TYPE_FIELD_NUMBER: _ClassVar[int]
     NODE_FIELD_NUMBER: _ClassVar[int]
@@ -194,7 +220,7 @@ class A2BMailboxTransferRequest(_message.Message):
     ) -> None: ...
 
 class A2BMailboxTransferResponse(_message.Message):
-    __slots__ = ("mailbox_id", "access_type", "access_status", "data")
+    __slots__ = ()
     MAILBOX_ID_FIELD_NUMBER: _ClassVar[int]
     ACCESS_TYPE_FIELD_NUMBER: _ClassVar[int]
     ACCESS_STATUS_FIELD_NUMBER: _ClassVar[int]
@@ -212,16 +238,16 @@ class A2BMailboxTransferResponse(_message.Message):
     ) -> None: ...
 
 class NoDataResponse(_message.Message):
-    __slots__ = ("dummy",)
+    __slots__ = ()
     DUMMY_FIELD_NUMBER: _ClassVar[int]
     dummy: bool
-    def __init__(self, dummy: bool = ...) -> None: ...
+    def __init__(self, dummy: _Optional[bool] = ...) -> None: ...
 
 class StatusRespRoleA2BMaster(_message.Message):
-    __slots__ = ("a2b_slaves_discovered", "a2b_fault")
+    __slots__ = ()
 
     class A2bFault(_message.Message):
-        __slots__ = ("fault", "location", "slave_with_fault")
+        __slots__ = ()
         FAULT_FIELD_NUMBER: _ClassVar[int]
         LOCATION_FIELD_NUMBER: _ClassVar[int]
         SLAVE_WITH_FAULT_FIELD_NUMBER: _ClassVar[int]
@@ -246,7 +272,7 @@ class StatusRespRoleA2BMaster(_message.Message):
     ) -> None: ...
 
 class StatusRespRoleA2BSlave(_message.Message):
-    __slots__ = ("a2b_state",)
+    __slots__ = ()
     A2B_STATE_FIELD_NUMBER: _ClassVar[int]
     a2b_state: SlaveA2BState
     def __init__(
@@ -254,14 +280,7 @@ class StatusRespRoleA2BSlave(_message.Message):
     ) -> None: ...
 
 class StatusResponse(_message.Message):
-    __slots__ = (
-        "usb_audio_downstream_state",
-        "usb_audio_upstream_state",
-        "device_state",
-        "config_json_state",
-        "status_master",
-        "status_slave",
-    )
+    __slots__ = ()
     USB_AUDIO_DOWNSTREAM_STATE_FIELD_NUMBER: _ClassVar[int]
     USB_AUDIO_UPSTREAM_STATE_FIELD_NUMBER: _ClassVar[int]
     DEVICE_STATE_FIELD_NUMBER: _ClassVar[int]
@@ -285,7 +304,7 @@ class StatusResponse(_message.Message):
     ) -> None: ...
 
 class InfoResponse(_message.Message):
-    __slots__ = ("hardware_revision", "software_revision", "serial_number")
+    __slots__ = ()
     HARDWARE_REVISION_FIELD_NUMBER: _ClassVar[int]
     SOFTWARE_REVISION_FIELD_NUMBER: _ClassVar[int]
     SERIAL_NUMBER_FIELD_NUMBER: _ClassVar[int]
@@ -300,23 +319,19 @@ class InfoResponse(_message.Message):
     ) -> None: ...
 
 class PositiveResponse(_message.Message):
-    __slots__ = (
-        "no_data_response",
-        "status_response",
-        "info_response",
-        "i2c_over_distance_response",
-        "a2b_mailbox_transfer_response",
-    )
+    __slots__ = ()
     NO_DATA_RESPONSE_FIELD_NUMBER: _ClassVar[int]
     STATUS_RESPONSE_FIELD_NUMBER: _ClassVar[int]
     INFO_RESPONSE_FIELD_NUMBER: _ClassVar[int]
     I2C_OVER_DISTANCE_RESPONSE_FIELD_NUMBER: _ClassVar[int]
     A2B_MAILBOX_TRANSFER_RESPONSE_FIELD_NUMBER: _ClassVar[int]
+    REGISTER_DUMP_RESPONSE_FIELD_NUMBER: _ClassVar[int]
     no_data_response: NoDataResponse
     status_response: StatusResponse
     info_response: InfoResponse
     i2c_over_distance_response: I2COverDistanceResponse
     a2b_mailbox_transfer_response: A2BMailboxTransferResponse
+    register_dump_response: RegisterDumpResponse
     def __init__(
         self,
         no_data_response: _Optional[_Union[NoDataResponse, _Mapping]] = ...,
@@ -328,28 +343,21 @@ class PositiveResponse(_message.Message):
         a2b_mailbox_transfer_response: _Optional[
             _Union[A2BMailboxTransferResponse, _Mapping]
         ] = ...,
+        register_dump_response: _Optional[_Union[RegisterDumpResponse, _Mapping]] = ...,
     ) -> None: ...
 
 class NegativeResponse(_message.Message):
-    __slots__ = ("no_data", "text_error")
+    __slots__ = ()
     NO_DATA_FIELD_NUMBER: _ClassVar[int]
     TEXT_ERROR_FIELD_NUMBER: _ClassVar[int]
     no_data: bool
     text_error: str
     def __init__(
-        self, no_data: bool = ..., text_error: _Optional[str] = ...
+        self, no_data: _Optional[bool] = ..., text_error: _Optional[str] = ...
     ) -> None: ...
 
 class RequestPacket(_message.Message):
-    __slots__ = (
-        "reset_request",
-        "a2b_discover_request",
-        "status_request",
-        "info_request",
-        "set_serial_request",
-        "i2c_over_distance_request",
-        "a2b_mailbox_transfer_request",
-    )
+    __slots__ = ()
     RESET_REQUEST_FIELD_NUMBER: _ClassVar[int]
     A2B_DISCOVER_REQUEST_FIELD_NUMBER: _ClassVar[int]
     STATUS_REQUEST_FIELD_NUMBER: _ClassVar[int]
@@ -357,6 +365,7 @@ class RequestPacket(_message.Message):
     SET_SERIAL_REQUEST_FIELD_NUMBER: _ClassVar[int]
     I2C_OVER_DISTANCE_REQUEST_FIELD_NUMBER: _ClassVar[int]
     A2B_MAILBOX_TRANSFER_REQUEST_FIELD_NUMBER: _ClassVar[int]
+    REGISTER_DUMP_REQUEST_FIELD_NUMBER: _ClassVar[int]
     reset_request: ResetRequest
     a2b_discover_request: A2BDiscoverRequest
     status_request: StatusRequest
@@ -364,6 +373,7 @@ class RequestPacket(_message.Message):
     set_serial_request: SetSerialRequest
     i2c_over_distance_request: I2COverDistanceRequest
     a2b_mailbox_transfer_request: A2BMailboxTransferRequest
+    register_dump_request: RegisterDumpRequest
     def __init__(
         self,
         reset_request: _Optional[_Union[ResetRequest, _Mapping]] = ...,
@@ -377,10 +387,11 @@ class RequestPacket(_message.Message):
         a2b_mailbox_transfer_request: _Optional[
             _Union[A2BMailboxTransferRequest, _Mapping]
         ] = ...,
+        register_dump_request: _Optional[_Union[RegisterDumpRequest, _Mapping]] = ...,
     ) -> None: ...
 
 class ResponsePacket(_message.Message):
-    __slots__ = ("positive_response", "negative_response")
+    __slots__ = ()
     POSITIVE_RESPONSE_FIELD_NUMBER: _ClassVar[int]
     NEGATIVE_RESPONSE_FIELD_NUMBER: _ClassVar[int]
     positive_response: PositiveResponse
