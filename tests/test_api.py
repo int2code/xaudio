@@ -25,6 +25,8 @@ from xaudio.protocol.interface_pb2 import (  # pylint:disable=no-name-in-module
     InfoResponse,
     NoDataResponse,
     PositiveResponse,
+    RegisterDumpRequest,
+    RegisterDumpResponse,
     RequestPacket,
     ResetRequest,
     ResponsePacket,
@@ -33,7 +35,7 @@ from xaudio.protocol.interface_pb2 import (  # pylint:disable=no-name-in-module
     StatusResponse,
     StatusRespRoleA2BMaster,
     StatusRespRoleA2BSlave,
-    UsbAudioStreamState, RegisterDumpRequest, RegisterDumpResponse,
+    UsbAudioStreamState,
 )
 
 
@@ -244,11 +246,13 @@ class TestXAudioApi:
         expected_request = (
             ANY,
             XAudioFramesParser.build_frame(
-                RequestPacket(register_dump_request=RegisterDumpRequest()).SerializeToString()
+                RequestPacket(
+                    register_dump_request=RegisterDumpRequest()
+                ).SerializeToString()
             ),
         )
         expected_response = RegisterDumpResponse(
-            data = [
+            data=[
                 RegisterDumpResponse.Data(reg=0, value=0),
                 RegisterDumpResponse.Data(reg=1, value=1),
                 RegisterDumpResponse.Data(reg=2, value=2),
@@ -263,7 +267,9 @@ class TestXAudioApi:
         )
         raw_response = XAudioFramesParser.build_frame(
             ResponsePacket(
-                positive_response=PositiveResponse(register_dump_response=expected_response)
+                positive_response=PositiveResponse(
+                    register_dump_response=expected_response
+                )
             ).SerializeToString()
         )
         with self.patch_serial_on_write_read(raw_response) as mock_rw:
