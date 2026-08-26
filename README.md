@@ -9,3 +9,9 @@
 
 This package provides classes used to communicate with `XAudio` device over different, 
 supported mediums and protocols.
+
+## Generating Python protocol files
+
+See the [protocol generation guide](src/xaudio/protocol/README.md) for instructions
+on generating the Python implementation and type information from the protobuf
+definitions.
