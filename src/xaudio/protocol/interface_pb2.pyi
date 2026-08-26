@@ -92,7 +92,6 @@ class A2BMailboxAccessStatus(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     A2B_MAILBOX_STATUS_GENERAL_FAIL: _ClassVar[A2BMailboxAccessStatus]
     A2B_MAILBOX_STATUS_NOT_EMPTY: _ClassVar[A2BMailboxAccessStatus]
     A2B_MAILBOX_STATUS_NOT_FULL: _ClassVar[A2BMailboxAccessStatus]
-
 A2B_FAULT_LOCATION_UNSPECIFIED: A2BFaultLocation
 A2B_FAULT_LOCATION_MASTER: A2BFaultLocation
 A2B_FAULT_LOCATION_SLAVE: A2BFaultLocation
