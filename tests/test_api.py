@@ -30,6 +30,7 @@ from xaudio.protocol.interface_pb2 import (  # pylint:disable=no-name-in-module
     RequestPacket,
     ResetRequest,
     ResponsePacket,
+    SetRegisterRequest,
     SlaveA2BState,
     StatusRequest,
     StatusResponse,
@@ -274,6 +275,30 @@ class TestXAudioApi:
         )
         with self.patch_serial_on_write_read(raw_response) as mock_rw:
             response = xaudio_api.register_dump()
+
+        assert response == expected_response
+        mock_rw.assert_called_once_with(*expected_request)
+
+    def test_set_register(self, xaudio_api):
+        """Verify set_register request sending and unpacking."""
+        expected_request = (
+            ANY,
+            XAudioFramesParser.build_frame(
+                RequestPacket(
+                    set_register_request=SetRegisterRequest(
+                        node_number=0, reg=0, value=0x0
+                    )
+                ).SerializeToString()
+            ),
+        )
+        expected_response = NoDataResponse(dummy=True)
+        raw_response = XAudioFramesParser.build_frame(
+            ResponsePacket(
+                positive_response=PositiveResponse(no_data_response=expected_response)
+            ).SerializeToString()
+        )
+        with self.patch_serial_on_write_read(raw_response) as mock_rw:
+            response = xaudio_api.set_register(0, 0, 0x0)
 
         assert response == expected_response
         mock_rw.assert_called_once_with(*expected_request)

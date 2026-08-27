@@ -18,6 +18,7 @@ from xaudio.protocol.interface_pb2 import (  # pylint:disable=no-name-in-module
     RegisterDumpResponse,
     RequestPacket,
     ResetRequest,
+    SetRegisterRequest,
     StatusRequest,
     StatusResponse,
 )
@@ -200,5 +201,21 @@ class XAudioApi:
         """
         register_dump_request = RegisterDumpRequest(node_number=node)
         request_packet = RequestPacket(register_dump_request=register_dump_request)
+        response = self.client.request(request_packet)
+        return response
+
+    def set_register(self, node: Optional[int], register: int, value: int):
+        """Sets the register value of the A2B transceiver.
+
+        :param node: ID from the JSON configuration file (slave).
+            If ``None``, sets the register of the master node.
+        :param register: register to set
+        :param value: register value
+
+        """
+        set_register_request = SetRegisterRequest(
+            node_number=node, reg=register, value=value
+        )
+        request_packet = RequestPacket(set_register_request=set_register_request)
         response = self.client.request(request_packet)
         return response

@@ -1,3 +1,12 @@
+### 0.5.0
+[MINOR] Added latest protobuf definitions (as of 26.08.26)
+
+- added new protobuf definitions and regenerated the .py/.pyi files
+- updated the general README.md
+- added xaudio/protocol/README.md to explain protobuf compile process 
+- added `set_register()` in api.py
+- added `test_set_register()` in tests/test_api.py
+
 ### 0.4.0
 [MINOR] Added protobuf definitions for A2Bridge version 1.3
 
