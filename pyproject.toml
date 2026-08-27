@@ -41,3 +41,6 @@ omit = [
 
 [tool.pylint]
 ignore-paths = ['.*protocol.*']  # those are automaticaly generated files by third party tools
+
+[tool.black]
+target-version = ["py312"]
