@@ -30,13 +30,13 @@ from xaudio.protocol.interface_pb2 import (  # pylint:disable=no-name-in-module
     RequestPacket,
     ResetRequest,
     ResponsePacket,
+    SetRegisterRequest,
     SlaveA2BState,
     StatusRequest,
     StatusResponse,
     StatusRespRoleA2BMaster,
     StatusRespRoleA2BSlave,
     UsbAudioStreamState,
-    SetRegisterRequest,
 )
 
 
