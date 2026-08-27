@@ -204,7 +204,7 @@ class XAudioApi:
         response = self.client.request(request_packet)
         return response
 
-    def set_register(self, node, register: int, value: int):
+    def set_register(self, node: Optional[int], register: int, value: int):
         """Sets the register value of the A2B transceiver.
 
         :param node: ID from the JSON configuration file (slave).
