@@ -3,7 +3,7 @@
 
 - added new protobuf definitions and regenerated the .py/.pyi files
 - updated the general README.md
-- added xaudi/protocol/README.md to explain protobuf compile process 
+- added xaudio/protocol/README.md to explain protobuf compile process 
 - added `set_register()` in api.py
 - added `test_set_register()` in tests/test_api.py
 
