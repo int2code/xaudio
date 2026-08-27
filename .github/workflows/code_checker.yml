@@ -39,7 +39,7 @@ jobs:
       if: steps.gather.outputs.files != ''
       run: |
         files=$(cat changed_files.txt)
-        black --check --diff --fast $files
+        black --check --diff $files
 
     - name: Analysing the code with isort
       if: steps.gather.outputs.files != ''
